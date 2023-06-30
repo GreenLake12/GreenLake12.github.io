@@ -175,56 +175,67 @@
 
       if (param1) document.getElementById('param1').value = param1;
       if (param2) document.getElementById('param2').value = param2;
-      if (param3) document.getElementById('param3').value = param3;
+      if (param3) document.getElementById('param3').value = param3.replace(/%/g, ' ');
     }
 
-    var rowCount = 1;
+// Move the rowCount variable outside the function
+var rowCount = 1;
 
-    function addRow() {
-      rowCount++;
-      var table = document.getElementById('table');
-      var row = table.insertRow();
-      var cell1 = row.insertCell(0);
-      var cell2 = row.insertCell(1);
-      cell1.innerHTML = rowCount;
-      cell2.innerHTML = '<textarea name="item[]" placeholder="Enter information" rows="1" oninput="autoExpand(this)"></textarea>';
-    }
+function addRow() {
+  rowCount++;
+  var table = document.getElementById('table');
+  var tbody = table.getElementsByTagName('tbody')[0];
+  var newRow = tbody.insertRow();
 
-    function autoExpand(textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = textarea.scrollHeight + 'px';
-    }
+  var cell1 = newRow.insertCell(0);
+  var cell2 = newRow.insertCell(1);
 
-    function submitForm() {
-      var param1 = document.getElementById('param1').value;
-      var param2 = document.getElementById('param2').value;
-      var param3 = document.getElementById('param3').value;
-      var date = document.getElementById('date').value;
-      var time = document.getElementById('time').value;
+  cell1.innerHTML = rowCount;
+  cell2.innerHTML = '<textarea name="item[]" placeholder="Enter information on additional work required" rows="1" oninput="autoExpand(this)"></textarea>';
+}
 
-      var table = document.getElementById('table');
-      var rows = table.getElementsByTagName('tr');
-      var items = [];
-      for (var i = 1; i < rows.length; i++) {
-        var row = rows[i];
-        var item = row.cells[1].getElementsByTagName('textarea')[0].value;
-        items.push(item);
-      }
+function autoExpand(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
 
-      var url = "results.html?" +
-                "param1=" + encodeURIComponent(param1) + "&" +
-                "param2=" + encodeURIComponent(param2) + "&" +
-                "param3=" + encodeURIComponent(param3) + "&" +
-                "date=" + encodeURIComponent(date) + "&" +
-                "time=" + encodeURIComponent(time) + "&" +
-                "items=" + encodeURIComponent(JSON.stringify(items));
+function submitForm() {
+  var param1 = document.getElementById('param1').value;
+  var param2 = document.getElementById('param2').value;
+  var param3 = document.getElementById('param3').value;
+  var date = document.getElementById('date').value;
+  var time = document.getElementById('time').value;
 
-      window.location.href = url;
-    }
+  var table = document.getElementById('table');
+  var rows = table.getElementsByTagName('tr');
+  var items = [];
+  for (var i = 1; i < rows.length; i++) {
+    var row = rows[i];
+    var item = row.cells[1].getElementsByTagName('textarea')[0].value;
+    items.push(item);
+  }
 
-    // Call populateFormFields on page load
-    window.addEventListener('load', populateFormFields);
+  // Display the form data when Submit button is pressed
+  var formData = {
+    param1: param1,
+    param2: param2,
+    param3: param3,
+    date: date,
+    time: time,
+    items: items
+  };
+
+  if (event) {
+    event.preventDefault();
+    alert(JSON.stringify(formData));
+  }
+}
+
+// Call populateFormFields on page load
+window.addEventListener('load', populateFormFields);
+
+
+
   </script>
 </body>
 </html>
-
