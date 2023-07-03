@@ -199,37 +199,6 @@ function autoExpand(textarea) {
   textarea.style.height = textarea.scrollHeight + 'px';
 }
 
-function submitForm() {
-  var param1 = document.getElementById('param1').value;
-  var param2 = document.getElementById('param2').value;
-  var param3 = document.getElementById('param3').value;
-  var date = document.getElementById('date').value;
-  var time = document.getElementById('time').value;
-
-  var table = document.getElementById('table');
-  var rows = table.getElementsByTagName('tr');
-  var items = [];
-  for (var i = 1; i < rows.length; i++) {
-    var row = rows[i];
-    var item = row.cells[1].getElementsByTagName('textarea')[0].value;
-    items.push(item);
-  }
-
-  // Display the form data when Submit button is pressed
-  var formData = {
-    param1: param1,
-    param2: param2,
-    param3: param3,
-    date: date,
-    time: time,
-    items: items
-  };
-
-  if (event) {
-    event.preventDefault();
-    alert(JSON.stringify(formData));
-  }
-}
 
 // Call populateFormFields on page load
 window.addEventListener('load', populateFormFields);
